@@ -78,6 +78,31 @@ function world.draw()
     world.map:draw(g.camera:getVisible())
 end
 
+function world.update(dt)
+    for i = 1, #world.objects do
+        local object = world.objects[i]
+        if not object.id then -- if it's an entity
+            object:update(dt)
+        elseif object.id == "action" then -- if it's an action
+            -- check if it's visible
+            local x1,y1,x2,y2 = world.map:getVisibleTiles()
+            if x1 <= object.x and object.x <= x2 and
+                y1 <= object.y and object.y <= y2 then 
+                if not object.visible and object.onVisible then
+                    -- if it wasn't and now it is, call :onVisible()
+                    object.visible = true
+                    object:onVisible()
+                end
+            else
+                if object.visible then
+                    -- if it was and now it isn't, reset
+                    object.visible = false
+                end
+            end
+        end
+    end
+end
+
 function world.changeMap(n, x, y)
     x, y = math.max(x, 1), math.max(y, 1)
 

@@ -135,14 +135,28 @@ function Tilemap:getDeco(x,y)
     return (self.deco[y] or {})[x]
 end
 
+function Tilemap:getVisibleTiles()
+    local l,t,w,h = g.camera:getVisible()
+    local x1,y1,x2,y2 =
+        math.floor(l/60)+1, -- l
+        math.floor(t/60)+1, -- t
+        math.ceil(w/60), -- w
+        math.ceil(h/60) -- h
+    x1,y1,x2,y2 =
+        math.clamp(x1, 1, self.width),
+        math.clamp(y1, 1, self.height),
+        math.clamp(x2+x1, 1, self.width),
+        math.clamp(y2+y1, 1, self.height)
+    return x1,y1,x2,y2
+end
+
 function Tilemap:draw(l,t,w,h)
     -- only render what's visible
     --love.graphics.draw(g.assets.bg[self.background], 0, 0)
-    local l,t,w,h = math.floor(l/60)+1,math.floor(t/60)+1,math.ceil(w/60),math.ceil(h/60)
-    w,h = math.clamp(w+l, 1, self.width),math.clamp(h+t, 1, self.height)
+    local x1,y1,x2,y2 = self:getVisibleTiles(l,t,w,h)
     -- it works like you'd expect
-    for y = t, h do
-        for x = l, w do
+    for y = y1, y2 do
+        for x = x1, x2 do
             local id = (self:getTile(x, y) or -1)
             if id > -1 then
                 local tsetid = math.floor(id/80)
@@ -153,8 +167,8 @@ function Tilemap:draw(l,t,w,h)
         end
     end
 
-    for y = t, h do
-        for x = l, w do
+    for y = y1, y2 do
+        for x = x1, x2 do
             local id = (self:getDeco(x, y) or -1)
             if id > -1 then
                 local tsetid = math.floor(id/80)
@@ -169,11 +183,10 @@ end
 function Tilemap:drawDebug(l,t,w,h)
     love.graphics.setColor(1,1,1,0.5)
     -- only render what's visible
-    local l,t,w,h = math.floor(l/60)+1,math.floor(t/60)+1,math.ceil(w/60),math.ceil(h/60)
-    w,h = math.clamp(w+l, 1, self.width),math.clamp(h+t, 1, self.height)
+    local x1,y1,x2,y2 = self:getVisibleTiles(l,t,w,h)
     -- it works like you'd expect
-    for y = t, h do
-        for x = l, w do
+    for y = y1, y2 do
+        for x = x1, x2 do
             local id = (self:getRawTile(x, y) or -1)
             -- we're dealing with the raw tiles right here, so a lot of times we'll reach doors which have ids over 100000, or actions which have non-numeric ids
             if not tonumber(id) then

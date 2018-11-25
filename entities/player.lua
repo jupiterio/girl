@@ -43,15 +43,17 @@ end
 
 local right = true
 function Player:update(dt)
+    local action = self:getAction()
     -- movement
     self.dx, self.dy = 0, 0
     if g.controls.jump() and self.canAct then
-        local action = self:getAction()
-        if action then
+        if action then -- if player's in an action
             if action.id == "door" then
+                -- if it's a door, change map
                 g.world.changeMap(action.goal, action.mapx, action.mapy)
-            elseif action.id == "action" then
-                action:onJump(self)
+            elseif action.id == "action" and action.onJump then
+                -- if it's an action, call :onJump()
+                action:onJump()
             end
         else
             self:jump(dt)
@@ -88,6 +90,14 @@ function Player:update(dt)
     end
 
     self:checkForEnemies()
+
+    if action and action.id == "action" and
+        action.onTouched and not action.touched then
+        -- if player is in an action, and action hasn't been touched before,
+        -- call :onTouched()
+        action:onTouched()
+        action.touched = true
+    end
 end
 
 function Player:checkForEnemies()

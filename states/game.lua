@@ -9,13 +9,7 @@ end
 function game:update(dt)
     if dt > 0.5 then return end
     g.player:update(dt)
-
-    for i = 1, #g.world.objects do
-        local object = g.world.objects[i]
-        if not object.id then
-            object:update(dt)
-        end
-    end
+    g.world.update(dt)
 
     g.camera:setPosition(math.floor(g.player.x), math.floor(g.player.y))
 end
