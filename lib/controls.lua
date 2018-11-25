@@ -13,9 +13,6 @@ controls.gui = gooi.newPanel({
     h = love.graphics.getHeight(),
     layout = "game"
 })
-if not g.game.touch then
-    controls.gui:setVisible(false)
-end
 
 local joystick = gooi.newJoy({
     size = unit()*2,

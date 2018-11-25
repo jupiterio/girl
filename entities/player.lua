@@ -49,7 +49,6 @@ function Player:update(dt)
         local action = self:getAction()
         if action then
             if action.id == "door" then
-                table.foreach(action, print)
                 g.world.changeMap(action.goal, action.mapx, action.mapy)
             elseif action.id == "action" then
                 action:onJump(self)
