@@ -1,0 +1,11 @@
+[video]
+resolution="1024x768"
+scale = 1
+
+[controls]
+touch = false
+jump = "space"
+up = "w"
+down = "s"
+left = "a"
+right = "d"

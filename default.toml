@@ -1,0 +1,17 @@
+[video]
+resolution="800x600"
+scale = 1
+borderless = false
+fullscreen = false
+fullscreentype = "desktop"
+vsync = true
+msaa = 0
+display = 1
+
+[controls]
+touch = false
+jump = "space"
+up = "w"
+down = "s"
+left = "a"
+right = "d"
