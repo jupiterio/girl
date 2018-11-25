@@ -32,4 +32,10 @@ function game:draw()
     gooi.draw()
 end
 
+function game:keypressed(key, scan, isrepeat)
+    if scan == "escape" then
+        Gamestate.switch(g.states.menu)
+    end
+end
+
 return game

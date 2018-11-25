@@ -226,6 +226,9 @@ function editor:keypressed(key, scan, isrepeat)
     if scan == "right" then
         id=id+1
     end
+    if scan == "escape" then
+        Gamestate.switch(g.states.menu)
+    end
     x, y = math.clamp(x, 1, map.width), math.clamp(y, 1, map.height)
 end
 
