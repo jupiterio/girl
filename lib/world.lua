@@ -79,11 +79,14 @@ function world.draw()
 end
 
 function world.update(dt)
+    for i = 1, #world.entities do
+        local entity = world.entities[i]
+        entity:update(dt)
+    end
+
     for i = 1, #world.objects do
         local object = world.objects[i]
-        if not object.id then -- if it's an entity
-            object:update(dt)
-        elseif object.id == "action" then -- if it's an action
+        if object.id == "action" then -- if it's an action
             -- check if it's visible
             local x1,y1,x2,y2 = world.map:getVisibleTiles()
             if x1 <= object.x and object.x <= x2 and
@@ -117,16 +120,15 @@ function world.changeMap(n, x, y)
     -- center the map if it's smaller than the window
     g.camera:setWorld((mapWidth - boundsWidth) / 2, (mapHeight - boundsHeight) / 2, boundsWidth, boundsHeight)
 
-    if world.objects then
-        for i = 1, #world.objects do
-            local object = world.objects[i]
-            if not object.id then
-                world.objects[i]:destroy()
-            end
+    if world.entities then
+        for i = 1, #world.entities do
+            local entity = world.entities[i]
+            entity:destroy()
         end
     end
 
     world.objects = {}
+    world.entities = {}
     local objects = world.map.objects
     for k,v in ipairs(objects) do
         if v.id == "door" or v.id == "entry" then
@@ -143,7 +145,7 @@ function world.changeMap(n, x, y)
                 g.player:reset(v.x, v.y)
             end
         elseif v.id == tileset.IDS.HERCULESID then
-            table.insert(world.objects, require("entities.enemies.hercules")(v.x, v.y))
+            table.insert(world.entities, require("entities.enemies.hercules")(v.x, v.y))
         end
     end
 end

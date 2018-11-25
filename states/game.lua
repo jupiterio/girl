@@ -21,11 +21,9 @@ function game:draw()
         g.world.draw()
         g.player:draw()
         
-        for i = 1, #g.world.objects do
-            local object = g.world.objects[i]
-            if not object.id then
-                object:draw()
-            end
+        for i = 1, #g.world.entities do
+            local entity = g.world.entities[i]
+            entity:draw()
         end
     end)
 

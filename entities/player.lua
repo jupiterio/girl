@@ -101,9 +101,9 @@ function Player:update(dt)
 end
 
 function Player:checkForEnemies()
-    for i = 1, #g.world.objects do
-        local object = g.world.objects[i]
-        if (not object.id) and object:distanceToPlayer() < 100 then
+    for i = 1, #g.world.entities do
+        local entity = g.world.entities[i]
+        if entity:distanceToPlayer() < 100 then
             --Gamestate.push(g.states.pause)
             break
         end
@@ -113,11 +113,9 @@ end
 function Player:getAction()
     for i = 1, #g.world.objects do
         local object = g.world.objects[i]
-        if object.id then
-            local x,y = self:getTilePos()
-            if x == object.x and y == object.y and not (object.id == "entry") then
-                return object
-            end
+        local x,y = self:getTilePos()
+        if x == object.x and y == object.y and not (object.id == "entry") then
+            return object
         end
     end
     return nil
