@@ -7,7 +7,7 @@ function game:enter()
 end
 
 function game:update(dt)
-    if dt > 0.5 then return end
+    if dt > 0.25 then return end
     g.player:update(dt)
     g.world.update(dt)
 
