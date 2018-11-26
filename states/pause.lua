@@ -14,13 +14,6 @@ function pause:draw()
     g.camera:draw(function()
         g.world.draw()
         g.player:draw()
-        
-        for i = 1, #g.world.objects do
-            local object = g.world.objects[i]
-            if not object.id then
-                object:draw()
-            end
-        end
     end)
 
     gooi.draw()

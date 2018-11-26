@@ -76,32 +76,51 @@ end
 function world.draw()
     love.graphics.setColor(255, 255, 255)
     world.map:draw(g.camera:getVisible())
+
+    world.forEntity(function(k,entity)
+        entity:draw()
+    end)
 end
 
-function world.update(dt)
-    for i = 1, #world.entities do
-        local entity = world.entities[i]
-        entity:update(dt)
-    end
 
-    for i = 1, #world.objects do
-        local object = world.objects[i]
-        if object.id == "action" then -- if it's an action
+function world.update(dt)
+    world.forEntity(function(k,entity)
+        entity:update(dt)
+    end)
+
+    for i = 1, #world.map.objects do
+        local object = world.map.objects[i]
+        if object.id ~= "door" and object.id ~= "entry" then
             -- check if it's visible
             local x1,y1,x2,y2 = world.map:getVisibleTiles()
             if x1 <= object.x and object.x <= x2 and
-                y1 <= object.y and object.y <= y2 then 
-                if not object.visible and object.onVisible then
-                    -- if it wasn't and now it is, call :onVisible()
+                y1 <= object.y and object.y <= y2 then
+                
+                if not object.visible then
                     object.visible = true
-                    object:onVisible()
+                    if tonumber(object.id) then
+                        if not world.entities[i] or world.entities[i].destroyed then
+                            if object.id == tileset.IDS.HERCULESID then
+                                world.entities[i] = require("entities.enemies.hercules")((object.x-0.5)*60, (object.y-1)*60)
+                            end
+                        end
+                    elseif object.onVisible then
+                        object:onVisible()
+                    end
                 end
             else
                 if object.visible then
-                    -- if it was and now it isn't, reset
                     object.visible = false
                 end
             end
+        end
+    end
+end
+
+function world.forEntity(f)
+    for k,v in pairs(world.entities) do
+        if not v.destroyed and f(k,v) then
+            break
         end
     end
 end
@@ -121,13 +140,11 @@ function world.changeMap(n, x, y)
     g.camera:setWorld((mapWidth - boundsWidth) / 2, (mapHeight - boundsHeight) / 2, boundsWidth, boundsHeight)
 
     if world.entities then
-        for i = 1, #world.entities do
-            local entity = world.entities[i]
+        world.forEntity(function(k,entity)
             entity:destroy()
-        end
+        end)
     end
 
-    world.objects = {}
     world.entities = {}
     local objects = world.map.objects
     for k,v in ipairs(objects) do
@@ -137,15 +154,10 @@ function world.changeMap(n, x, y)
                 g.player:reset((v.x-0.5)*60, (v.y-1)*60)
                 Timer.after(0.5, function() g.player.canAct = true end)
             end
-            table.insert(world.objects, v)
-        elseif v.id == "action" then
-            table.insert(world.objects, v)
         elseif v.id == tileset.IDS.PLAYERID then
             if not n then
-                g.player:reset(v.x, v.y)
+                g.player:reset((v.x-0.5)*60, (v.y-1)*60)
             end
-        elseif v.id == tileset.IDS.HERCULESID then
-            table.insert(world.entities, require("entities.enemies.hercules")(v.x, v.y))
         end
     end
 end

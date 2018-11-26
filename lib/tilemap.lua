@@ -36,7 +36,7 @@ function Tilemap:autoTile()
             local id = self:getRawTile(x, y)
             local object = tileset.OBJECTS[id]
             if object then -- if it's an object (enemy spawner, player spawnpoint, doors, etc.)
-                table.insert(self.objects, {id = id, x = x*60, y = y*60-60}) -- minus 60 to give some space for the entity if it's too big
+                table.insert(self.objects, {id = id, x = x, y = y})
                 id = object.tile -- objects can be put in tiles
             end
             if not tonumber(id) then -- actions don't have numeric ids

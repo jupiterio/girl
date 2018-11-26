@@ -20,11 +20,6 @@ function game:draw()
     g.camera:draw(function()
         g.world.draw()
         g.player:draw()
-        
-        for i = 1, #g.world.entities do
-            local entity = g.world.entities[i]
-            entity:draw()
-        end
     end)
 
     gooi.draw()
