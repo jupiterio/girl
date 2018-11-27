@@ -28,9 +28,32 @@ function draw:keypressed(key, scan, isrepeat)
     end
 end
 
-function draw:mousepressed(...) detection.mousepressed(...) end
-function draw:mousemoved(...) detection.mousemoved(...) end
-function draw:mousereleased(...) detection.mousereleased(...) Gamestate.pop() print(detection.detected) end
+function draw:mousepressed(x, y, button, istouch)
+    if istouch then return end
+    detection.pressed("mouse", x, y)
+end
+function draw:mousemoved(x, y, dx, dy, istouch)
+    if istouch then return end
+    detection.moved("mouse", x, y, dx, dy)
+end
+function draw:mousereleased(x, y, button, istouch)
+    if istouch then return end
+    detection.released("mouse", x, y)
+    Gamestate.pop()
+    print(detection.detected)
+end
+
+function draw:touchpressed(id, x, y) 
+    detection.pressed(id, x, y)
+end
+function draw:touchmoved(id, x, y, dx, dy)
+    detection.moved(id, x, y, dx, dy)
+end
+function draw:touchreleased(id, x, y)
+    detection.released(id, x, y)
+    Gamestate.pop()
+    print(detection.detected)
+end
 
 function draw:leave()
     love.graphics.setShader()

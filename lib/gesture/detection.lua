@@ -40,20 +40,22 @@ function detect.draw()
     love.graphics.setLineJoin(_oJoin)
 end
 
+local currentid = ""
 local mousedown = false
-function detect.mousepressed(x, y, button, istouch, presses)
+function detect.pressed(id, x, y)
     mousedown = true
 
     totaldx = 0
     totaldy = 0
     totaldistance = 0
 
+    currentid = id
     detect.stroke = {}
     table.insert(detect.stroke, {x=x, y=y})
 end
 
-function detect.mousemoved(x, y, dx, dy, istouch)
-    if mousedown then
+function detect.moved(id, x, y, dx, dy)
+    if mousedown and id == currentid then
         totaldx = totaldx + dx
         totaldy = totaldy + dy
 
@@ -69,11 +71,13 @@ function detect.mousemoved(x, y, dx, dy, istouch)
     end
 end
 
-function detect.mousereleased(x, y, button, istouch, presses)
-    mousedown = false
+function detect.released(id, x, y)
+    if id == currentid then
+        mousedown = false
 
-    local detected = detect.detector:spot({unpack(detect.stroke)})
-    detect.detected = detected.pattern or ""
+        local detected = detect.detector:spot({unpack(detect.stroke)})
+        detect.detected = detected.pattern or ""
+    end
 end
 
 return detect

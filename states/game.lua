@@ -31,22 +31,39 @@ function game:keypressed(key, scan, isrepeat)
     end
 end
 
-function game:mousepressed(...)
+function game:touchpressed(id, x, y)
     local overGui = false
     for k,v in ipairs(g.controls.gui.sons) do
-        if v.ref:overIt() then
+        if v.ref:overIt(x, y) and g.controls.gui.visible then
             overGui = true
             break
         end
     end
-    if not overGui then
+    if not overGui and not gooi.showingDialog then
         Gamestate.push(g.states.draw)
-        require("lib.gesture.detection").mousepressed(...)
+        g.states.draw:touchpressed(id, x, y)
     end
 end
 
+function game:mousepressed(x, y, button, istouch)
+    if istouch then return end
+
+    local overGui = false
+    for k,v in ipairs(g.controls.gui.sons) do
+        if v.ref:overIt(x, y) and g.controls.gui.visible then
+            overGui = true
+            break
+        end
+    end
+    if not overGui and not gooi.showingDialog then
+        Gamestate.push(g.states.draw)
+        g.states.draw:mousepressed(x, y, button, istouch)
+    end
+end
 
 function game:mousereleased(...)
+    -- if the mouse was pressed and the state switched, but the release was caught here, pop()
+    -- we don't want that because it causes bugs
     if Gamestate:current() == g.states.draw then
         Gamestate.pop()
     end
