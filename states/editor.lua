@@ -145,6 +145,12 @@ local save = gooi.newButton({text = "Save", w = 100, h = 40}):onRelease(function
     f:write(csvd)
     f:flush()
     f:close()
+
+    local f = io.open("assets/maps/" .. filename:getText() .. ".csv", "r")
+    if f then
+        g.assets.maps[filename:getText()] = csv.parse(f:read("*a"))
+        f:close()
+    end
 end)
 
 local showmap = gooi.newCheck({
