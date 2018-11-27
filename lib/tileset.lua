@@ -4,7 +4,8 @@ local g = require "global"
 
 tileset.TILESETS = {
     g.assets.maps.grass,
-    g.assets.maps.objects
+    g.assets.maps.objects,
+    g.assets.maps.bricks
 }
 
 -- neighbour bit flags
@@ -36,6 +37,7 @@ tileset.IDS = {
     UD_GRASSID = 5,
     PLAYERID = 6, -- player spawner. gon' remove this one in favour of doors and portals
     HERCULESID = 7, -- hercules beetle spawner
+    BRICKSID = 8,
 }
 local IDS = tileset.IDS
 
@@ -73,7 +75,8 @@ end
 
 tileset.TILES = {
     [IDS.DIRTID] = block(1, {[IDS.DIRTID] = true, [IDS.R_DIRTID] = true}, nil, "right"),
-    [IDS.R_DIRTID] = block(1, {[IDS.DIRTID] = true, [IDS.R_DIRTID] = true}, nil, "right")
+    [IDS.R_DIRTID] = block(1, {[IDS.DIRTID] = true, [IDS.R_DIRTID] = true}, nil, "right"),
+    [IDS.BRICKSID] = block(3, nil, nil, "left")
 }
 tileset.TILES[IDS.R_DIRTID][DIRS.s+DIRS.e] = 38
 tileset.TILES[IDS.R_DIRTID][DIRS.s+DIRS.w] = 39
