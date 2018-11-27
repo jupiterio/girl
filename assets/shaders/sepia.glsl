@@ -4,13 +4,9 @@
 // Author:  Landon Manning
 // Email:   LManning17@gmail.com
 
-uniform int   u_color   = 0;
-uniform float u_opacity = 0.75;
+const float u_opacity = 1.0;
 
-const vec3 SEPIA[2] = vec3[2](
-	vec3(1.2, 1.0, 0.8),
-	vec3(1.0, 0.95, 0.82)
-);
+const vec3 SEPIA = vec3(1.2, 1.0, 0.8);
 
 vec4 effect(vec4 color, sampler2D texture, vec2 texCoords, vec2 screenCoords) {
 	vec4 texColor = texture2D(texture, texCoords);
@@ -20,13 +16,7 @@ vec4 effect(vec4 color, sampler2D texture, vec2 texCoords, vec2 screenCoords) {
 
 	vec3 sepia = vec3(grey);
 
-	if (u_color == 0) {
-		sepia *= SEPIA[0];
-	} else if (u_color == 1) {
-		sepia *= SEPIA[1];
-	} else {
-		sepia *= SEPIA[0];
-	}
+	sepia *= SEPIA;
 
 	texColor.rgb = mix(
 		texColor.rgb,
