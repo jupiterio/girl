@@ -18,7 +18,8 @@ local Hercules = Class{__includes = Creature,
             moveSpeed = 120,
             jumpStrength = 350,
             flying = false,
-            health = 20
+            health = 20,
+            attackStrength = 10
         })
 
         local imageGrid = anim8.newGrid(180, 60, herculesImage:getWidth(), herculesImage:getHeight())

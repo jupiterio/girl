@@ -12,6 +12,7 @@ local Creature = Class{
         self.bbox = options.bbox or {ox = -1/2, oy = -1/2, w = 1, h = 1}
         self.moveSpeed = options.moveSpeed or 240
         self.health = options.health or 100
+        self.attackStrength = options.attackStrength or 10
         self.moving = {}
 
         self.ghost = options.ghost or false
@@ -107,6 +108,7 @@ function Creature:update(dt)
         animation:update(dt)
     end
 
+    self:checkForPlayer()
     self.timer:update(dt)
 end
 
@@ -132,7 +134,17 @@ function Creature:distanceToPlayer()
     return math.sqrt((g.player.x - self.x)*(g.player.x - self.x) + (g.player.y - self.y)*(g.player.y - self.y))
 end
 
-function Creature.hurt(hurter, hurtee, amount)
+function Creature:checkForPlayer(radius)
+    if self == g.player then return end
+
+    local radius = radius or 100
+    if self:distanceToPlayer() < radius then
+        --self:hurt(g.player)
+        g.player:hurt(self) -- for testing
+    end
+end
+
+function Creature.hurt(hurter, hurtee)
     if not hurter.destroyed and not hurtee.destroyed and not hurtee.immune then
         local angle = Vector.toPolar(hurter.x-hurtee.x, hurter.y-hurtee.y)
         local x, y = Vector.fromPolar(angle+math.pi, 60*3)
@@ -142,7 +154,7 @@ function Creature.hurt(hurter, hurtee, amount)
         hurtee.immune = true
         hurtee.ghost = true
 
-        hurtee.health = hurtee.health - amount
+        hurtee.health = hurtee.health - hurter.attackStrength
         if hurtee.onHurt then hurtee:onHurt() end
 
         hurtee.timer:tween(0.5, hurtee, {x = hurtee.x+x, y = hurtee.y+y}, "in-linear")

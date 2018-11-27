@@ -18,7 +18,8 @@ local Owl = Class{__includes = Creature,
             moveSpeed = 240,
             jumpStrength = 700,
             ghost = true,
-            health = 20
+            health = 20,
+            attackStrength = 10
         })
 
         local imageGrid = anim8.newGrid(60, 60, owlImage:getWidth(), owlImage:getHeight())

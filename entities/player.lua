@@ -18,7 +18,8 @@ local Player = Class{__includes = Creature,
             moveSpeed = 240,
             jumpStrength = 700,
             flying = false,
-            health = 100
+            health = 100,
+            attackStrength = 10
         })
 
         self.terminalVelocity = g.world.terminalVelocity*1.75
@@ -88,8 +89,6 @@ function Player:update(dt)
         self.anim8.demonFalling:gotoFrame(demonFrame)
     end
 
-    self:checkForEnemies()
-
     if action and action.id == "action" and
         action.onTouched and not action.touched then
         -- if player is in an action, and action hasn't been touched before,
@@ -97,15 +96,6 @@ function Player:update(dt)
         action:onTouched()
         action.touched = true
     end
-end
-
-function Player:checkForEnemies()
-    g.world.forEntity(function(k, entity)
-        if entity:distanceToPlayer() < 100 then
-            self:hurt(entity, 10)
-            return true
-        end
-    end)
 end
 
 function Player:getAction()
