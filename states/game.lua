@@ -34,7 +34,7 @@ end
 function game:mousepressed(...)
     local overGui = false
     for k,v in ipairs(g.controls.gui.sons) do
-        if v.overIt and v:overIt() then
+        if v.ref:overIt() then
             overGui = true
             break
         end
