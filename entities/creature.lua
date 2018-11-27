@@ -114,12 +114,11 @@ function Creature:drawBbox()
 end
 
 function Creature:destroy() -- remove all references to other things basically, just to make sure
-    self.destroyed = true
+    if self.onDestroyed then self:onDestroyed() end
     for k in pairs(self) do
-        if k ~= "destroyed" then
-            self[k] = nil
-        end
+        self[k] = nil
     end
+    self.destroyed = true
 end
 
 function Creature:distanceToPlayer()
