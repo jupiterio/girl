@@ -21,7 +21,6 @@ local Player = Class{__includes = Creature,
             health = 100
         })
 
-        self.canAct = true
         self.terminalVelocity = g.world.terminalVelocity*1.75
 
         local imageGrid = anim8.newGrid(120, 120, girlImage:getWidth(), girlImage:getHeight())
@@ -103,7 +102,7 @@ end
 function Player:checkForEnemies()
     g.world.forEntity(function(k, entity)
         if entity:distanceToPlayer() < 100 then
-            entity:destroy()
+            self:hurt(entity, 10)
             return true
         end
     end)
