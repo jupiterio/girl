@@ -1,4 +1,5 @@
 local Class = require("thirdparty.hump.class")
+local Vector = require("thirdparty.hump.vector-light")
 
 local g = require "global"
 
@@ -25,6 +26,9 @@ local Creature = Class{
         end
 
         self.anim8 = {}
+        self.canAct = true
+
+        self.timer = Timer.new()
     end
 }
 
@@ -102,6 +106,8 @@ function Creature:update(dt)
     for _,animation in pairs(self.anim8) do
         animation:update(dt)
     end
+
+    self.timer:update(dt)
 end
 
 function Creature:draw() end -- dummy function
@@ -114,6 +120,7 @@ function Creature:drawBbox()
 end
 
 function Creature:destroy() -- remove all references to other things basically, just to make sure
+    self.timer:clear()
     if self.onDestroyed then self:onDestroyed() end
     for k in pairs(self) do
         self[k] = nil
@@ -123,6 +130,28 @@ end
 
 function Creature:distanceToPlayer()
     return math.sqrt((g.player.x - self.x)*(g.player.x - self.x) + (g.player.y - self.y)*(g.player.y - self.y))
+end
+
+function Creature.hurt(hurter, hurtee, amount)
+    if not hurter.destroyed and not hurtee.destroyed and not hurtee.immune then
+        local angle = Vector.toPolar(hurter.x-hurtee.x, hurter.y-hurtee.y)
+        local x, y = Vector.fromPolar(angle+math.pi, 60*3)
+        
+        local ghost = hurtee.ghost
+        hurtee.canAct = false
+        hurtee.immune = true
+        hurtee.ghost = true
+
+        hurtee.health = hurtee.health - amount
+        if hurtee.onHurt then hurtee:onHurt() end
+
+        hurtee.timer:tween(0.5, hurtee, {x = hurtee.x+x, y = hurtee.y+y}, "in-linear")
+        hurtee.timer:after(0.5, function()
+            hurtee.canAct = true
+            hurtee.immune = false
+            hurtee.ghost = ghost
+        end)
+    end
 end
 
 return Creature

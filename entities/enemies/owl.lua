@@ -28,8 +28,6 @@ local Owl = Class{__includes = Creature,
 
         self.facingRight = math.random(1,2) == 1
         self.seenPlayer = false
-
-        self.timer = Timer.new()
     end
 }
 
@@ -45,15 +43,10 @@ function Owl:update(dt)
     end
 
     Creature.update(self, dt)
-    self.timer:update(dt)
 end
 
 function Owl:draw()
     self.anim8.still:draw(owlImage, self.x, self.y, 0, self.facingRight and 1 or -1, 1, 30, 30)
-end
-
-function Owl:onDestroyed()
-    self.timer:clear()
 end
 
 return Owl
