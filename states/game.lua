@@ -31,4 +31,25 @@ function game:keypressed(key, scan, isrepeat)
     end
 end
 
+function game:mousepressed(...)
+    local overGui = false
+    for k,v in ipairs(g.controls.gui.sons) do
+        if v.overIt and v:overIt() then
+            overGui = true
+            break
+        end
+    end
+    if not overGui then
+        Gamestate.push(g.states.draw)
+        require("lib.gesture.detection").mousepressed(...)
+    end
+end
+
+
+function game:mousereleased(...)
+    if Gamestate:current() == g.states.draw then
+        Gamestate.pop()
+    end
+end
+
 return game
