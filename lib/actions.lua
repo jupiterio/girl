@@ -12,4 +12,20 @@ function actions.test()
     }
 end
 
+function actions.lobby()
+    return {
+        tile = -1,
+        deco = -1,
+        onVisible = function(self) g.game.unlocked.lobby = true end
+    }
+end
+
+function actions.abBall()
+    return {
+        tile = -1,
+        deco = 80,
+        onTouched = function(self) g.game.abilities.ball = true end
+    }
+end
+
 return actions

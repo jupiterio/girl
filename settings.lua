@@ -41,5 +41,7 @@ g.game = {}
 g.game.scale = love.graphics.getHeight()*settings.video.scale/(60*10)
 g.game.mobile = love.system.getOS() == "Android" or love.system.getOS() == "iOS"
 g.game.touch = settings.controls.touch or g.game.mobile
+g.game.unlocked = {}
+g.game.abilities = {}
 
 return settings
