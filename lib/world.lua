@@ -1,7 +1,7 @@
 local world = {}
 
 local Tilemap = require "lib.tilemap"
-local tileset = require "lib.tileset"
+local tileset = require "lib.tilemap.enums"
 local tilecollider = require "thirdparty.tilecollider"
 
 local g = require "global"
