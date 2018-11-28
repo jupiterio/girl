@@ -51,12 +51,17 @@ function Player:update(dt)
             if action.id == "door" then
                 -- if it's a door, change map
                 g.world.changeMap(action.goal, action.mapx, action.mapy)
-            elseif action.id == "action" and action.onJump then
-                -- if it's an action, call :onJump()
-                action:onJump()
+            elseif action.id == "action" then
+                -- if it's an action, and there's an :onJump method, call it
+                -- else jump
+                if action.onJump then
+                    action:onJump()
+                else
+                    self:jump()
+                end
             end
         else
-            self:jump(dt)
+            self:jump()
         end
     end
     if g.controls.down() then
