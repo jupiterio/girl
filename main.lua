@@ -1,5 +1,6 @@
 local gamera = require "thirdparty.gamera"
 local csv = require "lib.csv"
+local save = require "lib.save"
 local gBuilder = require "lib.gesture.builder" -- debug
 require "thirdparty.gooi" -- why do you global
 Gamestate = require "thirdparty.hump.gamestate" -- *this* is something that should probably global
@@ -44,6 +45,7 @@ function love.load()
     g.world = require "lib.world"
     g.world.init()
     g.player = require("entities.player")()
+    save.load()
 
     -- start the camera
     g.camera = gamera.new(0, 0, 60*50, 60*50)
