@@ -6,6 +6,7 @@ function game:enter()
     g.world.changeMap(nil, 1, 1)
 
     gooi.setGroupVisible("game", true)
+    g.controls.gui:setVisible(g.game.touch)
 end
 
 function game:leave()

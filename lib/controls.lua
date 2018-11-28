@@ -14,7 +14,7 @@ local gui = gooi.newPanel({
     layout = "game",
     group = "game"
 })
-gui:setVisible(g.game.touch)
+controls.gui = gui
 
 local joystick = gooi.newJoy({
     size = unit()*2,
