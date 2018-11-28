@@ -106,7 +106,7 @@ local adddoor = gooi.newButton({
         else
             map.raw[y][x] = tonumber("1" .. cur .. goal .. mapx .. mapy)
         end
-        map:autoTile()
+        map:autotile()
     end
 end)
 
@@ -120,7 +120,7 @@ local addaction = gooi.newButton({text = "Add Action", w = 100, h = 40}):onRelea
     local name = actionname:getText()
     if actions[name] then
         map.raw[y][x] = name
-        map:autoTile()
+        map:autotile()
     end
 end)
 
@@ -245,7 +245,7 @@ end
 function editor:update(dt)
     if love.keyboard.isScancodeDown("space") then
         map.raw[y][x] = id
-        map:autoTile()
+        map:autotile()
     end
 
     poslabel:setText(tostring(x) .. " , " .. tostring(y))
