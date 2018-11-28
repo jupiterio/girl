@@ -6,18 +6,21 @@ local function unit()
     return love.graphics.getHeight()/5
 end
 
-controls.gui = gooi.newPanel({
+local gui = gooi.newPanel({
     x = 0,
     y = 0,
     w = love.graphics.getWidth(),
     h = love.graphics.getHeight(),
-    layout = "game"
+    layout = "game",
+    group = "game"
 })
+gui:setVisible(g.game.touch)
 
 local joystick = gooi.newJoy({
     size = unit()*2,
     deadZone = 0.2,
-    image = g.assets.joy
+    image = g.assets.joy,
+    group = "game"
 })
 joystick:setDigital()
 joystick:setRadius(unit())
@@ -26,12 +29,25 @@ local jumpPressed = false
 local jumpButton = gooi.newButton({
     text = "jump",
     w = unit()*2,
-    h = unit()*2
+    h = unit()*2,
+    group = "game"
 }):onPress(function() jumpPressed = true end):onRelease(function() jumpPressed = false end)
 jumpButton:setRadius(unit())
 
-controls.gui:add(joystick, "b-l")
-controls.gui:add(jumpButton, "b-r")
+gui:add(joystick, "b-l")
+gui:add(jumpButton, "b-r")
+
+function controls.overGui(x, y)
+    if gooi.showingDialog then return true end
+    local overGui = false
+    for k,v in ipairs(gui.sons) do
+        if v.ref:overIt(x, y) and gui.visible then
+            overGui = true
+            break
+        end
+    end
+    return overGui
+end
 
 function controls.jump()
     return

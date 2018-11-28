@@ -7,36 +7,45 @@ local actions = require "lib.actions"
 
 local g = require "global"
 
-editor.gui = gooi.newPanel({
+local gui = gooi.newPanel({
     x = 0,
     y = 0,
     w = love.graphics.getWidth(),
     h = 40*5,
-    layout = "grid 5x4"
+    layout = "grid 5x4",
+    group = "editor"
 })
 
 local idlabel = gooi.newLabel({
     text = "0",
     w = 25,
-    h = 40
+    h = 40,
+    group = "editor"
 })
 idlabel:fg({0,0,0,1})
 local poslabel = gooi.newLabel({
     text = "1,1",
     w = 25,
-    h = 40
+    h = 40,
+    group = "editor"
 })
 poslabel:fg({0,0,0,1})
 
 local size = gooi.newText({
     text = "10x10",
     w = 150,
-    h = 40
+    h = 40,
+    group = "editor"
 })
 local map
 local x, y = 1, 1
 local id = 0
-local setsize = gooi.newButton({text = "Set Size", w = 100, h = 40}):onRelease(function()
+local setsize = gooi.newButton({
+    text = "Set Size",
+    w = 100,
+    h = 40,
+    group = "editor"
+}):onRelease(function()
     local _w, _h = tonumber(size:getText():sub(1,2)), tonumber(size:getText():sub(4,5))
     if _w and _h then
         _w, _h = math.max(_w, 10), math.max(_h, 10)
@@ -62,19 +71,27 @@ local isentry = gooi.newCheck({
     text = "entry?",
     w = 125,
     h = 40,
-    checked = false
+    checked = false,
+    group = "editor"
 })
 local doorid = gooi.newText({
     text = "0",
     w = 150,
-    h = 40
+    h = 40,
+    group = "editor"
 })
 local doorpos = gooi.newText({
     text = "0,01,01",
     w = 150,
-    h = 40
+    h = 40,
+    group = "editor"
 })
-local adddoor = gooi.newButton({text = "Add Door", w = 100, h = 40}):onRelease(function()
+local adddoor = gooi.newButton({
+    text = "Add Door",
+    w = 100,
+    h = 40,
+    group = "editor"
+}):onRelease(function()
     local cur = tonumber(doorid:getText())
     local goal, mapx, mapy = tonumber(doorpos:getText():sub(1,1)), tonumber(doorpos:getText():sub(3,4)), tonumber(doorpos:getText():sub(6,7))
     if cur and goal and mapx and mapy then
@@ -96,7 +113,8 @@ end)
 local actionname = gooi.newText({
     text = "",
     w = 150,
-    h = 40
+    h = 40,
+    group = "editor"
 })
 local addaction = gooi.newButton({text = "Add Action", w = 100, h = 40}):onRelease(function()
     local name = actionname:getText()
@@ -109,19 +127,31 @@ end)
 local filename = gooi.newText({
     text = "area_1_1",
     w = 150,
-    h = 40
+    h = 40,
+    group = "editor"
 })
 
 local bg = gooi.newText({
     text = "forest",
     w = 150,
-    h = 40
+    h = 40,
+    group = "editor"
 })
-local setbg = gooi.newButton({text = "Set BG", w = 100, h = 40}):onRelease(function()
+local setbg = gooi.newButton({
+    text = "Set BG",
+    w = 100,
+    h = 40,
+    group = "editor"
+}):onRelease(function()
     map.background = bg:getText()
 end)
 
-local load = gooi.newButton({text = "Load", w = 100, h = 40}):onRelease(function()
+local load = gooi.newButton({
+    text = "Load",
+    w = 100,
+    h = 40,
+    group = "editor"
+}):onRelease(function()
     local f = io.open("assets/maps/" .. filename:getText() .. ".csv", "r")
     if f then
         local grid = csv.parse(f:read("*a"))
@@ -139,7 +169,12 @@ local load = gooi.newButton({text = "Load", w = 100, h = 40}):onRelease(function
         bg:setText(map.background)
     end
 end)
-local save = gooi.newButton({text = "Save", w = 100, h = 40}):onRelease(function()
+local save = gooi.newButton({
+    text = "Save",
+    w = 100,
+    h = 40,
+    group = "editor"
+}):onRelease(function()
     local f = io.open("assets/maps/" .. filename:getText() .. ".csv", "w+")
     local csvd = csv.stringify(map.raw) .. "\n" .. map.background
     f:write(csvd)
@@ -157,12 +192,13 @@ local showmap = gooi.newCheck({
     text = "Show Tiled Map",
     w = 200,
     h = 40,
-    checked = true
+    checked = true,
+    group = "editor"
 })
 
-editor.gui:setColspan(2,1, 3)
-editor.gui:setColspan(3,2, 2)
-editor.gui:add(
+gui:setColspan(2,1, 3)
+gui:setColspan(3,2, 2)
+gui:add(
     doorid,
     doorpos,
     isentry,
@@ -195,11 +231,15 @@ function editor:enter()
 
     love.keyboard.setKeyRepeat(true)
     love.graphics.setBackgroundColor(0.5,0.5,0.5)
+
+    gooi.setGroupVisible("editor", true)
 end
 
 function editor:leave()
     love.keyboard.setKeyRepeat(false)
     love.graphics.setBackgroundColor(1,1,1)
+
+    gooi.setGroupVisible("editor", false)
 end
 
 function editor:update(dt)
@@ -253,7 +293,7 @@ function editor:draw()
         love.graphics.setColor(1,1,1)
     end)
 
-    gooi.draw()
+    gooi.draw("editor")
 end
 
 return editor

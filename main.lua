@@ -55,10 +55,6 @@ function love.load()
 end
 
 function love.update(dt)
-    local current = Gamestate.current()
-    g.controls.gui:setVisible(current == g.states.game and g.game.touch)
-    g.states.menu.gui:setVisible(current == g.states.menu)
-    g.states.editor.gui:setVisible(current == g.states.editor)
     gooi.update(dt)
     Timer.update(dt)
 end

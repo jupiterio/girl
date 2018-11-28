@@ -4,6 +4,12 @@ local g = require "global"
 
 function game:enter()
     g.world.changeMap(nil, 1, 1)
+
+    gooi.setGroupVisible("game", true)
+end
+
+function game:leave()
+    gooi.setGroupVisible("game", false)
 end
 
 function game:update(dt)
@@ -22,7 +28,7 @@ function game:draw()
         g.player:draw()
     end)
 
-    gooi.draw()
+    gooi.draw("game")
 end
 
 function game:keypressed(key, scan, isrepeat)
@@ -33,13 +39,7 @@ end
 
 function game:touchpressed(id, x, y)
     local overGui = false
-    for k,v in ipairs(g.controls.gui.sons) do
-        if v.ref:overIt(x, y) and g.controls.gui.visible then
-            overGui = true
-            break
-        end
-    end
-    if not overGui and not gooi.showingDialog then
+    if not g.controls.overGui(x, y) then
         Gamestate.push(g.states.draw)
         g.states.draw:touchpressed(id, x, y)
     end
@@ -47,15 +47,7 @@ end
 
 function game:mousepressed(x, y, button, istouch)
     if istouch then return end
-
-    local overGui = false
-    for k,v in ipairs(g.controls.gui.sons) do
-        if v.ref:overIt(x, y) and g.controls.gui.visible then
-            overGui = true
-            break
-        end
-    end
-    if not overGui and not gooi.showingDialog then
+    if not g.controls.overGui(x, y) then
         Gamestate.push(g.states.draw)
         g.states.draw:mousepressed(x, y, button, istouch)
     end

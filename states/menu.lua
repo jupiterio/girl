@@ -7,34 +7,41 @@ local function unit()
     return love.graphics.getHeight()/5
 end
 
-menu.gui = gooi.newPanel({
+local gui = gooi.newPanel({
     x = 0,
     y = 0,
     w = love.graphics.getWidth(),
     h = love.graphics.getHeight(),
-    layout = "grid 5x1"
+    layout = "grid 5x1",
+    group = "menu"
 })
 
 local play = gooi.newButton({
     text = "Play",
     w = unit()*2,
-    h = unit()*2
+    h = unit()*2,
+    group = "menu"
 }):onRelease(function() Gamestate.switch(g.states.game) end)
 
 local edit = gooi.newButton({
     text = "Edit",
     w = unit()*2,
-    h = unit()*2
+    h = unit()*2,
+    group = "menu"
 }):onRelease(function() Gamestate.switch(g.states.editor) end)
 
-menu.gui:add(play, edit)
+gui:add(play, edit)
 
-function menu:update(dt)
-    
+function menu:enter()
+    gooi.setGroupVisible("menu", true)
+end
+
+function menu:leave()
+    gooi.setGroupVisible("menu", false)
 end
 
 function menu:draw()
-    gooi.draw()
+    gooi.draw("menu")
 end
 
 return menu
