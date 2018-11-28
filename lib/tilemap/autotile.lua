@@ -1,4 +1,5 @@
 local enums = require "lib.tilemap.enums" -- important enums
+local actions = require "lib.actions"
 
 local DIRS = enums.DIRS
 local IDS = enums.IDS

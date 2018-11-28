@@ -1,10 +1,8 @@
 local Class = require "thirdparty.hump.class"
 
 local anim8 = require "thirdparty.anim8"
-local bit = require "bit"
 local csv = require "lib.csv"
 local enums = require "lib.tilemap.enums" -- important enums
-local actions = require "lib.actions"
 
 local g = require "global"
 
