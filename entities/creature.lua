@@ -148,20 +148,16 @@ function Creature.hurt(hurter, hurtee)
     if not hurter.destroyed and not hurtee.destroyed and not hurtee.immune then
         local angle = Vector.toPolar(hurter.x-hurtee.x, hurter.y-hurtee.y)
         local x, y = Vector.fromPolar(angle+math.pi, 60*3)
-        
-        local ghost = hurtee.ghost
+
         hurtee.canAct = false
         hurtee.immune = true
-        hurtee.ghost = true
 
         hurtee.health = hurtee.health - hurter.attackStrength
         if hurtee.onHurt then hurtee:onHurt() end
 
-        hurtee.timer:tween(0.5, hurtee, {x = hurtee.x+x, y = hurtee.y+y}, "in-linear")
         hurtee.timer:after(0.5, function()
             hurtee.canAct = true
             hurtee.immune = false
-            hurtee.ghost = ghost
         end)
     end
 end
