@@ -116,7 +116,12 @@ local actionname = gooi.newText({
     h = 40,
     group = "editor"
 })
-local addaction = gooi.newButton({text = "Add Action", w = 100, h = 40}):onRelease(function()
+local addaction = gooi.newButton({
+    text = "Add Action",
+    w = 100,
+    h = 40,
+    group = "editor"
+}):onRelease(function()
     local name = actionname:getText()
     if actions[name] then
         map.raw[y][x] = name
