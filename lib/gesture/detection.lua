@@ -4,7 +4,7 @@ local ShapeDetector = require "thirdparty.ShapeDetector"
 local shapes = require "lib.gesture.shapes"
 
 -- New abilities will be learnt as you go
-detect.detector = ShapeDetector.new(shapes, {threshold = 0.75, rotatable = false})
+detect.detector = ShapeDetector.new(shapes, {threshold = 0.5, rotatable = false})
 detect.detected = ""
 
 local maxDistance = 1000
