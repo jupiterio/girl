@@ -148,6 +148,9 @@ tileset.SCALING = {
     [81] = 1.1, -- So to fix that, I'm scaling them 1.1x
     [82] = 1.1,
     [83] = 1.1,
+    [88] = 1.1,
+    [89] = 1.1,
+    [96] = 1.1,
 }
 
 return tileset

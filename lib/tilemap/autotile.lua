@@ -61,7 +61,16 @@ return function(self)
                     mapy = mapy
                 })
                 self.tiles[y][x] = IDS.EMPTYID -- can't collide with 'em
-                self.deco[y][x] = id > 2000000 and IDS.EMPTYID or math.random(80,83)
+                if id > 2000000 then
+                    self.deco[y][x] = IDS.EMPTYID
+                else
+                    if self:getRawTile(x, y-1) == -1 then
+                        self.deco[y-1][x] = 88
+                        self.deco[y][x] = 96
+                    else
+                        self.deco[y][x] = 89
+                    end
+                end
             elseif id > IDS.EMPTYID then
                 local deco = enums.DECOS[id]
                 if deco then -- Check if it's a deco
