@@ -1,5 +1,8 @@
 local builder = {}
 
+local ShapeDetector = require "thirdparty.ShapeDetector"
+ShapeDetector.new({}, {threshold = 0.5, rotatable = false, nbSamplePoints = 32})
+
 local touch
 function builder:draw()
     if touch and #touch > 2 then
@@ -44,8 +47,12 @@ function builder:mousereleased(x, y, button, istouch, presses)
 
     table.insert(touch, {x=x, y=y})
 
+    touch = ShapeDetector.Stroke.new(false, touch).points
+
     for k,v in ipairs(touch) do
-        gestureString[k] = "{x=" .. tostring(v.x) .. ",y=" .. tostring(v.y) .. "}"
+        gestureString[k] = "{x=" .. tostring(math.floor(v.x)) .. ",y=" .. tostring(math.floor(v.y)) .. "}"
+        v.x = v.x + 200
+        v.y = v.y + 200
     end
     print("GESTURE")
     print("{" .. table.concat(gestureString, ",") .. "}")
