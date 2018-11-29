@@ -8,6 +8,7 @@ function builder:draw()
             table.insert(result, v.x)
             table.insert(result, v.y)
         end
+        love.graphics.setColor(0, 0, 0)
         love.graphics.line(unpack(result))
     end
 end
@@ -44,7 +45,7 @@ function builder:mousereleased(x, y, button, istouch, presses)
     table.insert(touch, {x=x, y=y})
 
     for k,v in ipairs(touch) do
-        gestureString[k] = "{x=" .. tostring(v.x) .. ",v=" .. tostring(v.y) .. "}"
+        gestureString[k] = "{x=" .. tostring(v.x) .. ",y=" .. tostring(v.y) .. "}"
     end
     print("GESTURE")
     print("{" .. table.concat(gestureString, ",") .. "}")

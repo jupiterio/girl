@@ -1,6 +1,7 @@
 local draw = {}
 
 local detection = require "lib.gesture.detection"
+local abilities = require "lib.abilities"
 
 local g = require "global"
 
@@ -40,7 +41,10 @@ function draw:mousereleased(x, y, button, istouch)
     if istouch then return end
     detection.released("mouse", x, y)
     Gamestate.pop()
-    print(detection.detected)
+    local ability = abilities[detection.detected]
+    if ability then
+        ability(x, y)
+    end
 end
 
 function draw:touchpressed(id, x, y) 
@@ -52,7 +56,10 @@ end
 function draw:touchreleased(id, x, y)
     detection.released(id, x, y)
     Gamestate.pop()
-    print(detection.detected)
+    local ability = abilities[detection.detected]
+    if ability then
+        ability(x, y)
+    end
 end
 
 function draw:leave()

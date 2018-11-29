@@ -24,21 +24,45 @@ local Player = Class{__includes = Creature,
 
         self.terminalVelocity = g.world.terminalVelocity*1.75
 
-        local imageGrid = anim8.newGrid(120, 120, girlImage:getWidth(), girlImage:getHeight())
+        local bigGrid = anim8.newGrid(120, 120, girlImage:getWidth(), girlImage:getHeight())
+        local smallGrid = anim8.newGrid(60, 60, girlImage:getWidth(), girlImage:getHeight())
 
-        self.anim8.girlStill = anim8.newAnimation(imageGrid('1-2',1), 0.5)
-        self.anim8.girlMoving = anim8.newAnimation(imageGrid('1-7',2, '1-7',3), 0.08)
-        self.anim8.girlJumping = anim8.newAnimation(imageGrid('1-4',4), 0.1)
-        self.anim8.girlFalling = anim8.newAnimation(imageGrid('5-8',4), 0.1)
+        self.anim8.girlStill = anim8.newAnimation(bigGrid('1-2',1), 0.5)
+        self.anim8.girlMoving = anim8.newAnimation(bigGrid('1-7',2, '1-7',3), 0.08)
+        self.anim8.girlJumping = anim8.newAnimation(bigGrid('1-4',4), 0.1)
+        self.anim8.girlFalling = anim8.newAnimation(bigGrid('5-8',4), 0.1)
 
-        self.anim8.demonFalling = anim8.newAnimation(imageGrid('6-1',2,'6-1',1), 0.05, "pauseAtEnd")
+        self.anim8.ballRolling = anim8.newAnimation(smallGrid('13-16',1), 0.1)
+
+        self.anim8.demonFalling = anim8.newAnimation(bigGrid('6-1',2,'6-1',1), 0.05, "pauseAtEnd")
         self.anim8.demonFalling:pauseAtEnd()
+
+        self.state = "girl"
     end
 }
 
 function Player:reset(x, y)
     self:warp(x, y)
     self.anim8.demonFalling:pauseAtEnd()
+    self:changeState("girl")
+end
+
+function Player:changeState(state)
+    if state == "girl" then
+        self.bbox = {ox = -20, oy = -20, w = 40, h = 70}
+        self.moveSpeed = 240
+        self.jumpStrength = 700
+        self.attackStrength = 10
+        if self.state ~= "girl" then
+            self.y = self.y-30
+        end
+    elseif state == "ball" then
+        self.bbox = {ox = -20, oy = -20, w = 40, h = 40}
+        self.moveSpeed = 300
+        self.jumpStrength = 350
+        self.attackStrength = 0
+    end
+    self.state = state
 end
 
 local right = true
@@ -115,20 +139,25 @@ function Player:getAction()
 end
 
 function Player:draw()
-    if self.onGround then
-        if self.moving.right or self.moving.left then
-            self.anim8.girlMoving:draw(girlImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60)
+    if self.state == "girl" then
+        if self.onGround then
+            if self.moving.right or self.moving.left then
+                self.anim8.girlMoving:draw(girlImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60)
+            else
+                self.anim8.girlStill:draw(girlImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60)
+            end
         else
-            self.anim8.girlStill:draw(girlImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60)
+            -- different hats depending on whether she's going up or down
+            if self.speedY < 0 then self.anim8.girlJumping:draw(girlImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60)
+            else
+                -- we don't wanna show the girl during the last frames of the demon's animation
+                if self.anim8.demonFalling.position > 3 then self.anim8.girlFalling:draw(girlImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60) end
+            end
         end
-    else
-        -- different hats depending on whether she's going up or down
-        if self.speedY < 0 then self.anim8.girlJumping:draw(girlImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60)
-        else
-            -- we don't wanna show the girl during the last frames of the demon's animation
-            if self.anim8.demonFalling.position > 3 then self.anim8.girlFalling:draw(girlImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60) end
-        end
+    elseif self.state == "ball" then
+        self.anim8.ballRolling:draw(demonImage, self.x, self.y, 0, right and 1 or -1, 1, 30, 30)
     end
+
     self.anim8.demonFalling:draw(demonImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60)
 end
 
