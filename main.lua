@@ -12,6 +12,10 @@ function math.clamp(number, min, max)
     return math.min(math.max(number, min), max)
 end
 
+local function fontUnit(u)
+    return math.floor(love.graphics.getHeight()*u/50)
+end
+
 function love.load()
     love.graphics.setBackgroundColor(1,1,1)
     love.graphics.setDefaultFilter("nearest", "nearest")
@@ -25,9 +29,10 @@ function love.load()
         font = love.graphics.newFont(love.window.toPixels(16)),
         bgColor = {green[1], green[2], green[3], 0.5},
         fgColor = component.colors.white,
-        tooltipFont = love.graphics.newFont(love.window.toPixels(14)), -- tooltips are smaller than the main font
-        font = love.graphics.newFont(love.window.toPixels(16))
+        tooltipFont = love.graphics.newFont(fontUnit(1.5)), -- tooltips are smaller than the main font
+        font = love.graphics.newFont(fontUnit(2))
     })
+    love.graphics.setNewFont(fontUnit(2.5))
 
     -- important libaries
     g.assets = require("thirdparty.cargo").init({

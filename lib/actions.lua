@@ -21,11 +21,18 @@ function actions.lobby()
 end
 
 function actions.abBall()
-    return {
-        tile = -1,
-        deco = 80,
-        onTouched = function(self) g.game.abilities.ball = true end
-    }
+    if g.game.abilities.ball then
+        return {
+            tile = -1,
+            deco = -1
+        }
+    else
+        return {
+            tile = -1,
+            deco = 80,
+            onTouched = function(self) g.states.learn:learn("ball") end
+        }
+    end
 end
 
 return actions

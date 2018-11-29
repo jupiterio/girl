@@ -17,6 +17,10 @@ function detect.getInk()
 end
 
 function detect.draw()
+    detect.drawStroke(detect.stroke)
+end
+
+function detect.drawStroke(stroke, finish)
     local _oColor = {love.graphics.getColor()}
     local _oWidth = love.graphics.getLineWidth()
     local _oStyle = love.graphics.getLineStyle()
@@ -26,11 +30,12 @@ function detect.draw()
     love.graphics.setLineWidth(20)
     love.graphics.setLineStyle("rough")
     love.graphics.setLineJoin("bevel")
-    if detect.stroke and #detect.stroke > 2 then
+    if stroke and #stroke > 2 then
         local result = {}
-        for _,v in ipairs(detect.stroke) do
+        for k,v in ipairs(stroke) do
             table.insert(result, v.x)
             table.insert(result, v.y)
+            if k == finish then break end
         end
         love.graphics.line(result)
     end
