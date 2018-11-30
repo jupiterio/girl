@@ -11,7 +11,7 @@ local gui = gooi.newPanel({
     x = 0,
     y = 0,
     w = love.graphics.getWidth(),
-    h = 40*5,
+    h = love.graphics.getHeight()/2.5,
     layout = "grid 5x4",
     group = "editor"
 })
@@ -235,14 +235,12 @@ function editor:enter()
     map = Tilemap(grid)
 
     love.keyboard.setKeyRepeat(true)
-    love.graphics.setBackgroundColor(0.5,0.5,0.5)
 
     gooi.setGroupVisible("editor", true)
 end
 
 function editor:leave()
     love.keyboard.setKeyRepeat(false)
-    love.graphics.setBackgroundColor(1,1,1)
 
     gooi.setGroupVisible("editor", false)
 end
@@ -286,8 +284,14 @@ end
 function editor:draw()
     love.graphics.setColor(1, 1, 1)
 
+    map:drawBg(g.camera:getVisible())
     g.camera:draw(function()
-        love.graphics.rectangle("fill", 0, 0, map.width*60, map.height*60)
+        love.graphics.setColor(0.5,0.5,0.5)
+        love.graphics.rectangle("fill", -1000, -1000, 1000, map.height*60+2000)
+        love.graphics.rectangle("fill", map.width*60, -1000, 1000, map.height*60+2000)
+        love.graphics.rectangle("fill", 0, -1000, map.width*60, 1000)
+        love.graphics.rectangle("fill", 0, map.height*60, map.width*60, 1000)
+        love.graphics.setColor(1,1,1)
         map:drawDebug(g.camera:getVisible())
         if showmap.checked then
             map:draw(g.camera:getVisible())

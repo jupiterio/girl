@@ -13,8 +13,8 @@ function draw:draw()
     love.graphics.setShader(g.assets.shaders.sepia)
     love.graphics.setColor(1, 1, 1)
 
+    g.world.draw()
     g.camera:draw(function()
-        g.world.draw()
         g.player:draw()
     end)
 

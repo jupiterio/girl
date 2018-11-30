@@ -74,11 +74,16 @@ function world.init()
 end
 
 function world.draw()
-    love.graphics.setColor(255, 255, 255)
-    world.map:draw(g.camera:getVisible())
+    love.graphics.setColor(1,1,1)
+    world.map:drawBg(g.camera:getVisible())
 
-    world.forEntity(function(k,entity)
-        entity:draw()
+    g.camera:draw(function()
+        love.graphics.setColor(1, 1, 1)
+        world.map:draw(g.camera:getVisible())
+
+        world.forEntity(function(k,entity)
+            entity:draw()
+        end)
     end)
 end
 

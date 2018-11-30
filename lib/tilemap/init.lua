@@ -49,6 +49,15 @@ function Tilemap:getVisibleTiles()
     return x1,y1,x2,y2
 end
 
+function Tilemap:drawBg(l,t,w,h)
+    local bg = g.assets.bg[self.background]
+    local bgwidth = bg:getWidth()*g.game.scale/g.settings.video.scale*1.1
+    local wwidth = w*g.game.scale/g.settings.video.scale
+    local progress = l/(self.width*60-w)
+    local offset = bgwidth-wwidth
+    love.graphics.draw(bg, -offset*progress, 0, 0, g.game.scale/g.settings.video.scale*1.1)
+end
+
 function Tilemap:draw(l,t,w,h)
     -- only render what's visible
     --love.graphics.draw(g.assets.bg[self.background], 0, 0)
