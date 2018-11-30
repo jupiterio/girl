@@ -3,7 +3,11 @@ local game = {}
 local g = require "global"
 
 function game:enter()
-    g.world.changeMap(nil, 1, 1)
+    if g.game.unlocked.lobby then
+        g.world.changeMap(0, 1, 3)
+    else
+        g.world.changeMap(nil, 1, 1)
+    end
 
     gooi.setGroupVisible("game", true)
     g.controls.gui:setVisible(g.game.touch)
