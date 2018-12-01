@@ -7,7 +7,7 @@ function actions.test()
         tile = -1,
         deco = 80,
         onJump = function(self) gooi.alert({text = "activated!"}) end,
-        onVisible = function(self) g.world.entities["bird"] = require("entities.enemies.owl")((self.x-0.5)*60, (self.y-1)*60) end,
+        onVisible = function(self) g.world.entities["mole"] = require("entities.enemies.mole")((self.x-0.5)*60, (self.y-1)*60) end,
         onTouched = function(self) gooi.alert({text = "touched!"}) end
     }
 end
