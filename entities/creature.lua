@@ -47,6 +47,10 @@ end
 
 function Creature:jump(dt)
     if not self.flying and self.onGround then
+        local jump = "jump" .. tostring(math.random(1,2))
+        g.assets.sfx[jump]:stop()
+        g.assets.sfx[jump]:play()
+
         self.actualSpeedY = -self.jumpStrength
         self.onGround = false
     end
@@ -167,6 +171,10 @@ function Creature.hurt(hurter, hurtee)
 
         hurtee.canAct = false
         hurtee.immune = true
+
+        local hurt = "hurt" .. tostring(math.random(1,2))
+        g.assets.sfx[hurt]:stop()
+        g.assets.sfx[hurt]:play()
 
         hurtee.health = hurtee.health - hurter.attackStrength
         if hurtee.onHurt then hurtee:onHurt() end

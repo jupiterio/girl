@@ -55,9 +55,13 @@ function Player:changeState(state)
         self.jumpStrength = 700
         self.attackStrength = 10
         if self.state ~= "girl" then
+            g.assets.sfx.ball2:stop()
+            g.assets.sfx.ball2:play()
             self.y = self.y-30
         end
     elseif state == "ball" then
+        g.assets.sfx.ball1:stop()
+        g.assets.sfx.ball1:play()
         self.bbox = {ox = -20, oy = -20, w = 40, h = 40}
         self.moveSpeed = 300
         self.jumpStrength = 350
