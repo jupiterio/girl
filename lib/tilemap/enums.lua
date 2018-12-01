@@ -5,7 +5,7 @@ local g = require "global"
 tileset.TILESETS = {
     g.assets.maps.grass,
     g.assets.maps.objects,
-    g.assets.maps.bricks
+    g.assets.maps.underground
 }
 
 -- neighbour bit flags
@@ -39,6 +39,8 @@ tileset.IDS = {
     HERCULESID = 7, -- hercules beetle spawner
     BRICKSID = 8,
     OWLID = 9, -- barn owl spawner
+    ROCKID = 10,
+    R_ROCKID = 11,
 }
 local IDS = tileset.IDS
 
@@ -77,12 +79,19 @@ end
 tileset.TILES = {
     [IDS.DIRTID] = block(1, {[IDS.DIRTID] = true, [IDS.R_DIRTID] = true}, nil, "right"),
     [IDS.R_DIRTID] = block(1, {[IDS.DIRTID] = true, [IDS.R_DIRTID] = true}, nil, "right"),
-    [IDS.BRICKSID] = block(3, nil, nil, "left")
+    [IDS.BRICKSID] = block(3, nil, nil, "left"),
+    [IDS.ROCKID] = block(3, {[IDS.ROCKID] = true, [IDS.R_ROCKID] = true}, nil, "right"),
+    [IDS.R_ROCKID] = block(3, {[IDS.ROCKID] = true, [IDS.R_ROCKID] = true}, nil, "right"),
 }
 tileset.TILES[IDS.R_DIRTID][DIRS.s+DIRS.e] = 38
 tileset.TILES[IDS.R_DIRTID][DIRS.s+DIRS.w] = 39
 tileset.TILES[IDS.R_DIRTID][DIRS.n+DIRS.e] = 46
 tileset.TILES[IDS.R_DIRTID][DIRS.n+DIRS.w] = 47
+
+tileset.TILES[IDS.R_ROCKID][DIRS.s+DIRS.e] = 198
+tileset.TILES[IDS.R_ROCKID][DIRS.s+DIRS.w] = 199
+tileset.TILES[IDS.R_ROCKID][DIRS.n+DIRS.e] = 206
+tileset.TILES[IDS.R_ROCKID][DIRS.n+DIRS.w] = 207
 
 tileset.DECOS = {
     [IDS.AO_GRASSID] = block(1, nil, IDS.DIRTID, "left"),
