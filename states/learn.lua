@@ -65,12 +65,7 @@ end
 
 function learn:draw()
     love.graphics.setShader(g.assets.shaders.sepia)
-    love.graphics.setColor(1, 1, 1)
-
-    g.world.draw()
-    g.camera:draw(function()
-        g.player:draw()
-    end)
+    g.states.game:draw(true)
     love.graphics.setShader()
 
     detection.drawStroke(self.shape, math.floor(self.length))

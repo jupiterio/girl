@@ -25,7 +25,7 @@ function game:update(dt)
     g.camera:setPosition(math.floor(g.player.x), math.floor(g.player.y))
 end
 
-function game:draw()
+function game:draw(omitControls)
     love.graphics.setColor(1, 1, 1)
 
     g.world:draw()
@@ -33,7 +33,9 @@ function game:draw()
         g.player:draw()
     end)
 
-    gooi.draw("game")
+    if not omitControls then
+        gooi.draw("game")
+    end
 end
 
 function game:keypressed(key, scan, isrepeat)
