@@ -152,6 +152,10 @@ tileset.TYPES = {
     [39] = "BLSlope", -- Assigns slope status to certain tiles
     [46] = "TRSlope", -- "Top Right Slope"
     [47] = "TLSlope",
+    [198] = "BRSlope",
+    [199] = "BLSlope",
+    [206] = "TRSlope",
+    [207] = "TLSlope",
     -- [n] = "BRSlip" -- "Bottom Right Slippery Slope"
 }
 tileset.SCALING = {
