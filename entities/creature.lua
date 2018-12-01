@@ -155,8 +155,8 @@ function Creature:checkForPlayer(radius)
 
     local radius = radius or 100
     if self:distanceToPlayer() < radius then
-        --self:hurt(g.player)
-        g.player:hurt(self) -- for testing
+        self:hurt(g.player)
+        --g.player:hurt(self) -- for testing
     end
 end
 
@@ -173,6 +173,8 @@ function Creature.hurt(hurter, hurtee)
 
         hurtee.timer:after(0.5, function()
             hurtee.canAct = true
+        end)
+        hurtee.timer:after(1, function()
             hurtee.immune = false
         end)
     end

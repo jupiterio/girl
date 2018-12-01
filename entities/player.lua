@@ -27,10 +27,11 @@ local Player = Class{__includes = Creature,
         local bigGrid = anim8.newGrid(120, 120, girlImage:getWidth(), girlImage:getHeight())
         local smallGrid = anim8.newGrid(60, 60, girlImage:getWidth(), girlImage:getHeight())
 
-        self.anim8.girlStill = anim8.newAnimation(bigGrid('1-2',1), 0.5)
-        self.anim8.girlMoving = anim8.newAnimation(bigGrid('1-7',2, '1-7',3), 0.08)
-        self.anim8.girlJumping = anim8.newAnimation(bigGrid('1-4',4), 0.1)
-        self.anim8.girlFalling = anim8.newAnimation(bigGrid('5-8',4), 0.1)
+        self.anim8.still = anim8.newAnimation(bigGrid('1-2',1), 0.5)
+        self.anim8.moving = anim8.newAnimation(bigGrid('1-7',2, '1-7',3), 0.08)
+        self.anim8.jumping = anim8.newAnimation(bigGrid('1-4',4), 0.1)
+        self.anim8.falling = anim8.newAnimation(bigGrid('5-8',4), 0.1)
+        self.anim8.hurt = anim8.newAnimation(bigGrid('1-4',5), 0.1)
 
         self.anim8.ballRolling = anim8.newAnimation(smallGrid('13-16',1), 0.1)
 
@@ -137,19 +138,23 @@ function Player:getAction()
 end
 
 function Player:draw()
-    if self.state == "girl" then
+    if self.immune and not self.canAct then
+        love.graphics.setColor(1,0.75,0.75)
+        self.anim8.hurt:draw(girlImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60)
+        love.graphics.setColor(1,1,1)
+    elseif self.state == "girl" then
         if self.onGround then
             if self.moving.right or self.moving.left then
-                self.anim8.girlMoving:draw(girlImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60)
+                self.anim8.moving:draw(girlImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60)
             else
-                self.anim8.girlStill:draw(girlImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60)
+                self.anim8.still:draw(girlImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60)
             end
         else
             -- different hats depending on whether she's going up or down
-            if self.speedY < 0 then self.anim8.girlJumping:draw(girlImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60)
+            if self.speedY < 0 then self.anim8.jumping:draw(girlImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60)
             else
                 -- we don't wanna show the girl during the last frames of the demon's animation
-                if self.anim8.demonFalling.position > 3 then self.anim8.girlFalling:draw(girlImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60) end
+                if self.anim8.demonFalling.position > 3 then self.anim8.falling:draw(girlImage, self.x, self.y, 0, right and 1 or -1, 1, 60, 60) end
             end
         end
     elseif self.state == "ball" then
