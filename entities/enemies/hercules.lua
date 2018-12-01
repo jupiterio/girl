@@ -24,14 +24,15 @@ local Hercules = Class{__includes = Creature,
 
         local imageGrid = anim8.newGrid(180, 60, herculesImage:getWidth(), herculesImage:getHeight())
 
-        self.anim8.herculesStill = anim8.newAnimation(imageGrid('1-2',1), 0.5)
-        self.anim8.herculesMoving = anim8.newAnimation(imageGrid('1-6',2), 0.1)
+        self.anim8.still = anim8.newAnimation(imageGrid("1-2",1), 0.5)
+        self.anim8.moving = anim8.newAnimation(imageGrid("1-6",2), 0.1)
+        self.anim8.hurt = anim8.newAnimation(imageGrid("1-2",3), 0.1)
 
         self.facingRight = true
     end
 }
 
-function Hercules:update(dt)
+function Hercules:onUpdate(dt)
     local distance = self:distanceToPlayer()
     self.dx, self.dy = 0, 0
     if distance > 60*5 then
@@ -49,20 +50,24 @@ function Hercules:update(dt)
         end
     end
     self:move(dt, self.facingRight and "r" or "l")
-
-    Creature.update(self, dt)
 end
 
 function Hercules:draw()
-    if self.onGround then
-        if self.moving.right or self.moving.left then
-            self.anim8.herculesMoving:draw(herculesImage, self.x, self.y, 0, self.facingRight and 1 or -1, 1, 90, 30)
-        else
-            self.anim8.herculesStill:draw(herculesImage, self.x, self.y, 0, self.facingRight and 1 or -1, 1, 90, 30)
-        end
+    if self.immune then
+        love.graphics.setColor(1,0.75,0.75)
+        self.anim8.hurt:draw(herculesImage, self.x, self.y, 0, self.facingRight and 1 or -1, 1, 90, 30)
     else
-        self.anim8.herculesStill:draw(herculesImage, self.x, self.y, 0, self.facingRight and 1 or -1, 1, 90, 30)
+        if self.onGround then
+            if self.moving.right or self.moving.left then
+                self.anim8.moving:draw(herculesImage, self.x, self.y, 0, self.facingRight and 1 or -1, 1, 90, 30)
+            else
+                self.anim8.still:draw(herculesImage, self.x, self.y, 0, self.facingRight and 1 or -1, 1, 90, 30)
+            end
+        else
+            self.anim8.still:draw(herculesImage, self.x, self.y, 0, self.facingRight and 1 or -1, 1, 90, 30)
+        end
     end
+    love.graphics.setColor(1,1,1)
 end
 
 return Hercules

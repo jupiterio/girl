@@ -7,7 +7,8 @@ local tilecollider = require "thirdparty.tilecollider"
 local g = require "global"
 
 local function getTile(x, y)
-    return world.map:getTile(x+1, y+1) or 1
+    if y >= world.map.height then return -1 end
+    return world.map:getTile(x+1, y+1) or 0
 end
 
 local increasing = (function() local t = {} for i = 1,60 do table.insert(t, i) end return t end)()
@@ -105,8 +106,11 @@ function world.update(dt)
                     object.visible = true
                     if tonumber(object.id) then
                         if not world.entities[i] or world.entities[i].destroyed then
+                            local x, y = (object.x-0.5)*60, (object.y-1)*60
                             if object.id == tileset.IDS.HERCULESID then
-                                world.entities[i] = require("entities.enemies.hercules")((object.x-0.5)*60, (object.y-1)*60)
+                                world.entities[i] = require("entities.enemies.hercules")(x, y)
+                            elseif object.id == tileset.IDS.OWLID then
+                                world.entities[i] = require("entities.enemies.owl")(x, y+30)
                             end
                         end
                     elseif object.onVisible then

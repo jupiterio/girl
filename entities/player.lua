@@ -66,11 +66,11 @@ function Player:changeState(state)
 end
 
 local right = true
-function Player:update(dt)
+function Player:onUpdate(dt)
     local action = self:getAction()
     -- movement
     self.dx, self.dy = 0, 0
-    if g.controls.jump() and self.canAct then
+    if g.controls.jump() then
         if action then -- if player's in an action
             if action.id == "door" then
                 -- if it's a door, change map
@@ -99,8 +99,6 @@ function Player:update(dt)
         right = true
         self:move(dt, "r")
     end
-
-    Creature.update(self, dt)
 
     -- animation stuff
     if self.actualSpeedY < g.world.terminalVelocity then -- if her speed is lower than the terminal velocity, play the animation (it's reversed)

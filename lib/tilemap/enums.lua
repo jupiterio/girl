@@ -35,9 +35,10 @@ tileset.IDS = {
     R_DIRTID = 3,
     R_AO_GRASSID = 4,
     UD_GRASSID = 5,
-    PLAYERID = 6, -- player spawner. gon' remove this one in favour of doors and portals
+    PLAYERID = 6, -- player spawner. Preferably use doors.
     HERCULESID = 7, -- hercules beetle spawner
     BRICKSID = 8,
+    OWLID = 9, -- barn owl spawner
 }
 local IDS = tileset.IDS
 
@@ -134,7 +135,8 @@ tileset.DECOS[IDS.R_AO_GRASSID][DIRS.n+DIRS.w] = 43
 
 tileset.OBJECTS = {
     [IDS.PLAYERID] = { tile = -1 }, -- can be a tile or deco id
-    [IDS.HERCULESID] = { tile = -1 } -- can be a tile or deco id
+    [IDS.HERCULESID] = { tile = -1 },
+    [IDS.OWLID] = { tile = -1 }
 }
 tileset.TYPES = {
     [38] = "BRSlope", -- This is for the tile collision handler

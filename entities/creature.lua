@@ -69,6 +69,13 @@ function Creature:getTilePos()
 end
 
 function Creature:update(dt)
+    if self.canAct then
+        self:onUpdate(dt)
+    else
+        self.dx = 0
+        self.dy = 0
+    end
+
     -- gravity
     if not self.flying then
         self.actualSpeedY = self.actualSpeedY + g.world.gravity * dt -- this doesn't have a speed limit
@@ -110,8 +117,17 @@ function Creature:update(dt)
 
     self:checkForPlayer()
     self.timer:update(dt)
+
+    if self.health <= 0 or
+       self.x < 0 or self.y < 0 or
+       self.x > g.world.map.width*60 or self.y > g.world.map.height*60 then
+
+        self:onKilled()
+        return
+    end
 end
 
+function Creature:onUpdate(dt) end -- dummy function
 function Creature:draw() end -- dummy function
 
 function Creature:drawBbox()
@@ -160,6 +176,10 @@ function Creature.hurt(hurter, hurtee)
             hurtee.immune = false
         end)
     end
+end
+
+function Creature:onKilled()
+    self:destroy()
 end
 
 return Creature
