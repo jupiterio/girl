@@ -118,8 +118,8 @@ function Player:onUpdate(dt)
         -- calculate which frame to show based on speed
         local demonFrame = math.floor(overflow/limit*11)+1
         demonFrame = 13-math.clamp(demonFrame, 1, 12)
-        -- if it's reached the last frame, respawn (TODO: Don't restart the game)
-        if self.anim8.demonFalling.position == 1 then Gamestate.switch(g.states.game) return end
+        -- if it's reached the last frame, respawn
+        if self.anim8.demonFalling.position == 1 then self:kill() return end
         self.anim8.demonFalling:gotoFrame(demonFrame)
     end
 

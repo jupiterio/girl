@@ -140,11 +140,14 @@ end
 function world.changeMap(n, x, y)
     x, y = math.max(x, 1), math.max(y, 1)
 
+    local mapname = "area_" .. tostring(x) .. "_" .. tostring(y)
+    local file = g.assets.maps[mapname]
+    if not file then Gamestate.push(g.states.unfinished) return end
+
     local gameWidth, gameHeight = love.graphics.getDimensions()
     gameWidth, gameHeight = gameWidth/g.game.scale, gameHeight/g.game.scale
 
-    local mapname = "area_" .. tostring(x) .. "_" .. tostring(y)
-    world.map = Tilemap(g.assets.maps[mapname])
+    world.map = Tilemap(file)
 
     local    mapWidth,    mapHeight = 60*world.map.width, 60*world.map.height
     local boundsWidth, boundsHeight = math.max(mapWidth, gameWidth), math.max(mapHeight, gameHeight)

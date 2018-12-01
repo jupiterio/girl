@@ -85,4 +85,12 @@ function actions.abAirjump()
     end
 end
 
+function actions.finish()
+    return {
+        tile = -1,
+        deco = -1,
+        onTouched = function(self) Gamestate.push(g.states.finished) end
+    }
+end
+
 return actions

@@ -63,8 +63,8 @@ function game:draw(omitControls)
 end
 
 function game:keypressed(key, scan, isrepeat)
-    if scan == "escape" then
-        Gamestate.switch(g.states.menu)
+    if scan == "escape" or scane == "acback" then
+        Gamestate.push(g.states.pause)
     end
 end
 

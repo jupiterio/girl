@@ -2,12 +2,6 @@ local pause = {}
 
 local g = require "global"
 
-function pause:update(dt)
-    if g.controls.down() then
-        Gamestate.pop()
-    end
-end
-
 function pause:draw()
     love.graphics.setColor(255, 255, 255)
 
@@ -16,7 +10,15 @@ function pause:draw()
         g.player:draw()
     end)
 
-    gooi.draw()
+    love.graphics.printf("Paused. Click or tap to return to the game", 50, 50, love.graphics.getWidth()-100)
+end
+
+function pause:mousepressed()
+    Gamestate.pop()
+end
+
+function pause:touchpressed()
+    Gamestate.pop()
 end
 
 return pause

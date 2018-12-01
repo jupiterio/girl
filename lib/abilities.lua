@@ -13,7 +13,7 @@ function abilities.ball()
 end
 
 function abilities.airjump()
-    if not g.player.onGround then
+    if g.game.abilities.airjump and not g.player.onGround then
         g.player.onGround = true
         g.player:jump()
         g.player.anim8.demonFalling:gotoFrame(5)
