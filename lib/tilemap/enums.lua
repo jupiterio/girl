@@ -41,6 +41,7 @@ tileset.IDS = {
     OWLID = 9, -- barn owl spawner
     ROCKID = 10,
     R_ROCKID = 11,
+    MOLEID = 12,
 }
 local IDS = tileset.IDS
 
@@ -145,7 +146,8 @@ tileset.DECOS[IDS.R_AO_GRASSID][DIRS.n+DIRS.w] = 43
 tileset.OBJECTS = {
     [IDS.PLAYERID] = { tile = -1 }, -- can be a tile or deco id
     [IDS.HERCULESID] = { tile = -1 },
-    [IDS.OWLID] = { tile = -1 }
+    [IDS.OWLID] = { tile = -1 },
+    [IDS.MOLEID] = { tile = -1 }
 }
 tileset.TYPES = {
     [38] = "BRSlope", -- This is for the tile collision handler

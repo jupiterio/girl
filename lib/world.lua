@@ -3,6 +3,7 @@ local world = {}
 local Tilemap = require "lib.tilemap"
 local tileset = require "lib.tilemap.enums"
 local tilecollider = require "thirdparty.tilecollider"
+local save = require "lib.save"
 
 local g = require "global"
 
@@ -108,9 +109,11 @@ function world.update(dt)
                         if not world.entities[i] or world.entities[i].destroyed then
                             local x, y = (object.x-0.5)*60, (object.y-1)*60
                             if object.id == tileset.IDS.HERCULESID then
-                                world.entities[i] = require("entities.enemies.hercules")(x, y)
+                                world.entities[i] = require("entities.enemies.hercules")(x, y+30)
                             elseif object.id == tileset.IDS.OWLID then
                                 world.entities[i] = require("entities.enemies.owl")(x, y+30)
+                            elseif object.id == tileset.IDS.MOLEID then
+                                world.entities[i] = require("entities.enemies.mole")(x, y+30)
                             end
                         end
                     elseif object.onVisible then
@@ -169,6 +172,7 @@ function world.changeMap(n, x, y)
             end
         end
     end
+    save()
 end
 
 function world.move(creature, dx, dy)

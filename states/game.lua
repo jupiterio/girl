@@ -2,6 +2,28 @@ local game = {}
 
 local g = require "global"
 
+local function unit()
+    return love.graphics.getHeight()/5
+end
+
+local gui = gooi.newPanel({
+    x = 0,
+    y = 0,
+    w = love.graphics.getWidth(),
+    h = love.graphics.getHeight(),
+    layout = "game",
+    group = "game"
+})
+
+local healthBar = gooi.newBar({
+    value = 1,
+    w = unit()*2,
+    h = unit()/2,
+    group = "game"
+})
+
+gui:add(healthBar, "t-l")
+
 function game:enter()
     if g.game.unlocked.lobby then
         g.world.changeMap(0, 1, 3)
@@ -23,6 +45,8 @@ function game:update(dt)
     g.world.update(dt)
 
     g.camera:setPosition(math.floor(g.player.x), math.floor(g.player.y))
+
+    healthBar.value = g.player.health/100
 end
 
 function game:draw(omitControls)

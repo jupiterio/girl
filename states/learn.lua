@@ -10,6 +10,11 @@ local indications = {
         "You've learnt the ball ability!",
         "Draw a circle " .. (g.game.touch and "using your finger" or "using the mouse") ..
         " starting from the top and you'll transform into a ball that can fit in small spaces"
+    },
+    airjump = {
+        "You've learnt the air jump!",
+        "Draw a sideways s " .. (g.game.touch and "using your finger" or "using the mouse") ..
+        " starting from the left and you'll do a jump in the air"
     }
 }
 

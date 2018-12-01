@@ -1,5 +1,5 @@
 local Class = require "thirdparty.hump.class"
-local Creature = require "entities.Creature"
+local Creature = require "entities.creature"
 
 local anim8 = require "thirdparty.anim8"
 

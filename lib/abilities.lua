@@ -12,6 +12,15 @@ function abilities.ball()
     end
 end
 
+function abilities.airjump()
+    if not g.player.onGround then
+        g.player.onGround = true
+        g.player:jump()
+        g.player.anim8.demonFalling:gotoFrame(5)
+        g.player.anim8.demonFalling:resume()
+    end
+end
+
 function abilities.canTransform()
     if g.player.state == "girl" then -- transformations can only go smaller
         return true -- so yes, transform

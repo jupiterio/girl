@@ -1,5 +1,5 @@
 local Class = require "thirdparty.hump.class"
-local Creature = require "entities.Creature"
+local Creature = require "entities.creature"
 
 local anim8 = require "thirdparty.anim8"
 
@@ -70,6 +70,7 @@ function Player:changeState(state)
     self.state = state
 end
 
+local lastdoor = {}
 local right = true
 function Player:onUpdate(dt)
     local action = self:getAction()
@@ -80,6 +81,7 @@ function Player:onUpdate(dt)
             if action.id == "door" then
                 -- if it's a door, change map
                 g.world.changeMap(action.goal, action.mapx, action.mapy)
+                lastdoor = action
             elseif action.id == "action" then
                 -- if it's an action, and there's an :onJump method, call it
                 -- else jump
@@ -139,6 +141,11 @@ function Player:getAction()
         end
     end
     return nil
+end
+
+function Player:onKilled()
+    self.health = 100
+    g.world.changeMap(lastdoor.goal, lastdoor.mapx, lastdoor.mapy)
 end
 
 function Player:draw()

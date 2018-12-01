@@ -1,6 +1,6 @@
 local Class = require "thirdparty.hump.class"
 local Vector = require "thirdparty.hump.vector-light"
-local Creature = require "entities.Creature"
+local Creature = require "entities.creature"
 
 local anim8 = require "thirdparty.anim8"
 
