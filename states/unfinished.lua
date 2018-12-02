@@ -10,7 +10,7 @@ function unfinished:draw()
         g.player:draw()
     end)
 
-    love.graphics.printf("This part has been finished, sorry. Click or tap to return to the game", 50, 50, love.graphics.getWidth()-100)
+    love.graphics.printf("This part hasn't been finished, sorry. Click or tap to return to the game", 50, 50, love.graphics.getWidth()-100)
 end
 
 function unfinished:mousepressed()
